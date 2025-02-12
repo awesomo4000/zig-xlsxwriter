@@ -3,8 +3,8 @@
     .version = "0.1.0",
     .dependencies = .{
         .xlsxwriter = .{
-            .url = "git+https://github.com/jmcnamara/libxlsxwriter#8206bda64ab66db608a920b09d35d163464aad1b",
-            .hash = "1220c857623f705410d1c51d3cd890701046ce47a8302dbf06abae86bcf249696854",
+            .url = "git+https://github.com/jmcnamara/libxlsxwriter#caf41581f14c6fc0b9f957cc05c2a7fbb9e4d9eb",
+            .hash = "122080b8864c9fcc6637e77fe5dc7b8d72107b70c53cc928e042319d291b076317ef",
         },
     },
     .paths = .{""},
