@@ -41,6 +41,12 @@ pub fn build(b: *std.Build) void {
         .target = target,
         .optimize = optimize,
     });
+    makeExample(b, .{
+        .path = "examples/output_buffer.zig",
+        .module = xlsxwriter_module,
+        .target = target,
+        .optimize = optimize,
+    });
 }
 
 fn makeExample(b: *std.Build, options: BuildInfo) void {
