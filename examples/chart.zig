@@ -3,7 +3,7 @@ const xlsxwriter = @import("xlsxwriter");
 pub fn main() void {
 
     // Create a new workbook and add a worksheet.
-    const workbook: ?*xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("out/chart.xlsx");
+    const workbook: ?*xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("out/zig-chart.xlsx");
     const worksheet: ?*xlsxwriter.lxw_worksheet = xlsxwriter.workbook_add_worksheet(workbook, null);
 
     // Write some data for the chart. */

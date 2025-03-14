@@ -15,7 +15,7 @@ var expenses = [_]Expense{
 pub fn main() void {
 
     // Create a workbook and add a worksheet.
-    const workbook: *xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("out/tutorial1.xlsx");
+    const workbook: *xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("out/zig-tutorial1.xlsx");
     const worksheet: *xlsxwriter.lxw_worksheet = xlsxwriter.workbook_add_worksheet(workbook, null);
 
     // Start from the first cell. Rows and columns are zero indexed.
