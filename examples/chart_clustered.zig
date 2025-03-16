@@ -207,7 +207,7 @@ fn writeWorksheetData(worksheet: *xlsxwriter.lxw_worksheet, bold: *xlsxwriter.lx
 
 pub fn main() !void {
     const workbook = xlsxwriter.workbook_new(
-        "zig-chart_clustered.xlsx",
+        "chart_clustered.xlsx",
     );
     const worksheet = xlsxwriter.workbook_add_worksheet(
         workbook,
@@ -267,12 +267,10 @@ pub fn main() !void {
     // Insert the chart into the worksheet
     _ = xlsxwriter.worksheet_insert_chart(
         worksheet,
-        2,
-        6,
+        2, // row
+        6, // col (G)
         chart,
     );
 
-    _ = xlsxwriter.workbook_close(
-        workbook,
-    );
+    _ = xlsxwriter.workbook_close(workbook);
 }

@@ -1,0 +1,6 @@
+Comparison of chart_styles screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_styles.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_styles.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_styles.png
+
+RESULT: MATCH - User confirmed visual match

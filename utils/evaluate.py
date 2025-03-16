@@ -12,8 +12,15 @@ import datetime
 import re
 import argparse
 import time
+import signal
 from pathlib import Path
 import shutil
+import shutil as sh  # for terminal size
+
+# Global state for monitoring
+monitoring_state = {
+    'current_time': None,
+}
 
 # Add function to clear terminal screen
 def clear_screen():
@@ -45,12 +52,18 @@ def get_example_status(example_name):
     if screenshots_exist:
         comparison_match, _ = check_comparison_results(example_name)
     
+    # Check if Excel output exists with correct name
+    root_dir = Path(__file__).parent.parent
+    extension = ".xlsm" if example_name == "macro" else ".xlsx"
+    excel_file = root_dir / "testing" / "zig-output-xls" / f"zig-{example_name}{extension}"
+    excel_exists = excel_file.exists()
+    
     # Determine status
-    if file_exists and screenshots_exist and comparison_match:
+    if file_exists and screenshots_exist and comparison_match and excel_exists:
         status = "DONE"
         message = f"✅ Example '{example_name}' is fully implemented and verified."
     elif file_exists:
-        status = "IN PROGRESS"
+        status = "IN_PROGRESS"
         message = f"⚠️ Example '{example_name}' is implemented but not fully verified."
     else:
         status = "NOT_STARTED"
@@ -105,15 +118,7 @@ def check_screenshots_exist(example_name):
     """Check if a screenshot exists for the example."""
     root_dir = Path(__file__).parent.parent
     screenshots_dir = root_dir / "testing" / "screenshots"
-    
-    # Handle special case for conditional_format1
-    screenshot_name = example_name
-    if example_name == "conditional_format1":
-        screenshot_name = "conditional_format_simple"
-    
-    # Check for combined screenshot
-    screenshot_file = screenshots_dir / f"comparison_{screenshot_name}.png"
-    
+    screenshot_file = screenshots_dir / f"comparison_{example_name}.png"
     return screenshot_file.exists()
 
 
@@ -121,13 +126,7 @@ def check_comparison_results(example_name):
     """Check if comparison results exist and indicate a match."""
     root_dir = Path(__file__).parent.parent
     comparison_dir = root_dir / "testing" / "comparison_results"
-    
-    # Handle special case for conditional_format1
-    result_name = example_name
-    if example_name == "conditional_format1":
-        result_name = "conditional_format_simple"
-    
-    result_file = comparison_dir / f"{result_name}_output.txt"
+    result_file = comparison_dir / f"{example_name}_output.txt"
     
     if not result_file.exists():
         return False, f"❌ No comparison results found."
@@ -243,79 +242,120 @@ def get_all_examples():
     return examples
 
 
-def list_all_examples():
+def get_terminal_size():
+    """Get terminal size or fallback to default."""
+    try:
+        columns, rows = os.get_terminal_size()
+        # Add small buffer to height to ensure everything fits
+        return max(columns, 70), max(rows + 2, 12)  # Minimum reasonable size plus buffer
+    except:
+        return 70, 24  # Fallback size
+
+
+def list_all_examples(is_monitor_mode=False):
     """List all examples and their status."""
     root_dir = Path(__file__).parent.parent
-    
-    # Get all examples from the examples/c directory
     all_examples = get_all_examples()
+    term_width, term_height = get_terminal_size()
     
-    print(f"\n{'=' * 70}")
-    print(f"{'EXAMPLE':<30} {'STATUS':<20} {'ZIG':<5} {'SCRN':<5} {'MATCH':<5}")
-    print(f"{'-' * 70}")
+    # Calculate available lines for examples (accounting for headers and summary)
+    header_lines = 3  # Title + header + separator
+    footer_lines = 5  # Separator + 3 summary lines + bottom border
+    max_example_lines = term_height - (header_lines + footer_lines) - 5 if is_monitor_mode else float('inf')
     
-    done_count = 0
-    in_progress_count = 0
-    not_started_count = 0
+    # Group examples by status
+    not_started = []
+    in_progress = []
+    done = []
     
     for example in sorted(all_examples):
-        # Get actual status based on implementation
-        actual_status, _ = get_example_status(example)
-        
-        # Check if Zig file exists
+        status, _ = get_example_status(example)
+        if status == "DONE":
+            done.append(example)
+        elif status == "IN_PROGRESS":
+            in_progress.append(example)
+        else:
+            not_started.append(example)
+    
+    # Count totals
+    done_count = len(done)
+    in_progress_count = len(in_progress)
+    not_started_count = len(not_started)
+    
+    print(f"{'=' * min(70, term_width)}")
+    print(f"{'EXAMPLE':<30} {'STATUS':<20} {'ZIG':<5} {'SCRN':<5} {'MATCH':<5}")
+    print(f"{'-' * min(70, term_width)}")
+    
+    displayed_examples = 0
+    max_to_display = max_example_lines - 1 if is_monitor_mode else float('inf')
+    
+    # Helper function to print example info
+    def print_example_info(example):
+        nonlocal displayed_examples
+        if displayed_examples >= max_to_display:
+            return False
+            
+        status, _ = get_example_status(example)
         zig_file = root_dir / "examples" / f"{example}.zig"
         zig_exists = "✅" if zig_file.exists() else "❌"
         
-        # Check if screenshots exist
         screenshots_exist = check_screenshots_exist(example)
         screenshots_status = "✅" if screenshots_exist else "❌"
         
-        # Check visual match
         if screenshots_exist:
-            visual_match, _ = check_comparison_results(example)
-            visual_status = "✅" if visual_match else "❌"
+            comparison_match, _ = check_comparison_results(example)
+            visual_status = "✅" if comparison_match else "❌"
         else:
             visual_status = "❓"
         
-        # Format status with emoji
-        if actual_status == "DONE":
+        if status == "DONE":
             formatted_status = "DONE"
-            done_count += 1
-        elif actual_status == "IN PROGRESS":
+        elif status == "IN_PROGRESS":
             formatted_status = "IN PROGRESS"
-            in_progress_count += 1
         else:
             formatted_status = "NOT_STARTED"
-            not_started_count += 1
         
         print(f"{example:<30} {formatted_status:<20} {zig_exists:<5} {screenshots_status:<5} {visual_status:<5}")
+        displayed_examples += 1
+        return True
+
+    # Print examples in order: NOT_STARTED, IN_PROGRESS, DONE
+    for example in not_started:
+        if not print_example_info(example):
+            break
+            
+    if in_progress and displayed_examples < max_to_display:
+        if displayed_examples > 0:
+            print(f"{'-' * min(70, term_width)}")  # Separator between groups
+        for example in in_progress:
+            if not print_example_info(example):
+                break
+                
+    if done and displayed_examples < max_to_display:
+        if displayed_examples > 0:
+            print(f"{'-' * min(70, term_width)}")  # Separator between groups
+        for example in done:
+            if not print_example_info(example):
+                break
     
-    print(f"{'-' * 70}")
+    if displayed_examples >= max_to_display and len(all_examples) > max_to_display:
+        remaining = len(all_examples) - displayed_examples
+        print(f"... and {remaining} more examples ...")
+    
+    print(f"{'-' * min(70, term_width)}")
     total = len(all_examples)
     print(f"Total: {total} examples ({done_count} done, {in_progress_count} in progress, {not_started_count} not started)")
     print(f"Progress: {done_count/total*100:.1f}% complete,") 
     print(f"{(done_count+in_progress_count)/total*100:.1f}% in progress or complete")
-    print(f"{'=' * 70}\n")
+    print(f"{'=' * min(70, term_width)}", end='')
 
 
 def get_c_excel_file(example_name):
     """Get the path to the C Excel file."""
     root_dir = Path(__file__).parent.parent
     c_output_dir = root_dir / "testing" / "c-output-xls"
-    
-    # Handle special case for conditional_format1
-    c_file_name = example_name
-    if example_name == "conditional_format1":
-        c_file_name = "conditional_format_simple"
-    
-    # Handle special case for dates_and_times examples
-    if example_name.startswith("dates_and_times"):
-        c_file_name = example_name.replace("dates_and_times", "date_and_times")
-    
-    # Special case for macro example which uses .xlsm
     extension = ".xlsm" if example_name == "macro" else ".xlsx"
-    
-    c_excel_file = c_output_dir / f"{c_file_name}{extension}"
+    c_excel_file = c_output_dir / f"{example_name}{extension}"
     
     if not c_excel_file.exists():
         print(f"C Excel file not found: {c_excel_file}")
@@ -357,6 +397,82 @@ def cleanup_excel_file(example_name, zig_excel_file):
         return False
 
 
+def redraw_screen():
+    """Redraw the screen with current state."""
+    if not monitoring_state['current_time']:
+        return
+        
+    clear_screen()
+    print("")
+    print(f"Last update: {monitoring_state['current_time']}".ljust(48) + "[Press Ctrl+C to exit]")
+    list_all_examples(is_monitor_mode=True)
+
+
+def handle_resize(signum, frame):
+    """Handle terminal resize event."""
+    redraw_screen()
+
+
+def display_monitor_status():
+    """Display status of all examples in monitor mode."""
+    root_dir = Path(__file__).parent.parent
+    all_examples = get_all_examples()
+    term_width, term_height = get_terminal_size()
+    
+    # Calculate available lines for examples (accounting for headers and summary)
+    header_lines = 3  # Title + header + separator
+    footer_lines = 5  # Separator + 3 summary lines + bottom border
+    max_example_lines = term_height - (header_lines + footer_lines) - 5
+    
+    print(f"{'=' * min(70, term_width)}")
+    print(f"{'EXAMPLE':<30} {'STATUS':<20}")
+    print(f"{'-' * min(70, term_width)}")
+    
+    done_count = 0
+    in_progress_count = 0
+    not_started_count = 0
+    
+    sorted_examples = sorted(all_examples)
+    displayed_examples = 0
+    
+    for example in sorted_examples:
+        if displayed_examples >= max_example_lines - 1 and len(sorted_examples) > max_example_lines:
+            remaining = len(sorted_examples) - displayed_examples
+            print(f"... and {remaining} more examples ...")
+            break
+            
+        status, message = get_example_status(example)
+        
+        # Check if the example file exists
+        file_exists, file_message = check_example_file_exists(example)
+        
+        # Check if screenshots exist
+        screenshots_exist = check_screenshots_exist(example)
+        screenshots_message = "✅ Screenshots exist" if screenshots_exist else "❌ Screenshots do not exist"
+        
+        # Check comparison results
+        comparison_match = False
+        if screenshots_exist:
+            comparison_match, comparison_message = check_comparison_results(example)
+        
+        if status == "DONE":
+            done_count += 1
+        elif status == "IN PROGRESS":
+            in_progress_count += 1
+        else:
+            not_started_count += 1
+        
+        print(f"{example:<30} {message}")
+        displayed_examples += 1
+    
+    print(f"{'-' * min(70, term_width)}")
+    total = len(all_examples)
+    print(f"Total: {total} examples ({done_count} done, {in_progress_count} in progress, {not_started_count} not started)")
+    print(f"Progress: {done_count/total*100:.1f}% complete,") 
+    print(f"{(done_count+in_progress_count)/total*100:.1f}% in progress or complete")
+    print(f"{'=' * min(70, term_width)}", end='')
+
+
 def main():
     """Main function to evaluate an example."""
     parser = argparse.ArgumentParser(description="Evaluate the implementation status of examples")
@@ -371,34 +487,15 @@ def main():
     # Monitor mode
     if args.monitor is not None:
         try:
-            # Track previous status of each example
-            prev_status = {}
+            # Set up resize handler
+            signal.signal(signal.SIGWINCH, handle_resize)
+            
             while True:
-                all_examples = get_all_examples()
-                current_status = {}
-                
-                # Get current status for all examples
-                for example in all_examples:
-                    status, _ = get_example_status(example)
-                    current_status[example] = status
-                
-                # Check if any status changed
-                status_changed = False
-                for example, status in current_status.items():
-                    if example not in prev_status or prev_status[example] != status:
-                        status_changed = True
-                        break
-                
-                # Only update display if status changed
-                if status_changed:
-                    clear_screen()
-                    current_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    print(f"Monitoring examples status (updates on status change)")
-                    print(f"Last update: {current_time}")
-                    print(f"Press Ctrl+C to exit\n")
-                    list_all_examples()
-                    prev_status = current_status.copy()
-                
+                monitoring_state['current_time'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                clear_screen()
+                print("")
+                print(f"Last update: {monitoring_state['current_time']}".ljust(48) + "[Press Ctrl+C to exit]")
+                list_all_examples(is_monitor_mode=True)
                 time.sleep(args.monitor)
         except KeyboardInterrupt:
             print("\nMonitoring stopped.")
@@ -406,7 +503,7 @@ def main():
     
     if not args.example:
         # No example specified, list all examples
-        list_all_examples()
+        list_all_examples(is_monitor_mode=False)
         return 0
 
     # Handle cleanup if requested

@@ -1,0 +1,6 @@
+Comparison of merge_range screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/merge_range.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-merge_range.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_merge_range.png
+
+RESULT: MATCH - User confirmed visual match

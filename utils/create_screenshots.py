@@ -20,13 +20,7 @@ def check_screenshot_exists(example_name):
     """Check if a screenshot exists for the Zig implementation."""
     root_dir = Path(__file__).parent.parent
     screenshots_dir = root_dir / "testing" / "screenshots"
-    
-    # Handle special case for conditional_format1
-    screenshot_name = example_name
-    
-    # Check for combined screenshot
-    screenshot_file = screenshots_dir / f"comparison_{screenshot_name}.png"
-    
+    screenshot_file = screenshots_dir / f"comparison_{example_name}.png"
     return screenshot_file.exists()
 
 
@@ -72,20 +66,8 @@ def get_c_excel_file(example_name):
     """Get the path to the C Excel file."""
     root_dir = Path(__file__).parent.parent
     c_output_dir = root_dir / "testing" / "c-output-xls"
-    
-    # Handle special case for conditional_format1
-    c_file_name = example_name
-    if example_name == "conditional_format1":
-        c_file_name = "conditional_format_simple"
-    
-    # Handle special case for dates_and_times examples
-    if example_name.startswith("dates_and_times"):
-        c_file_name = example_name.replace("dates_and_times", "date_and_times")
-    
-    # Handle special case for macro example which uses .xlsm
     extension = ".xlsm" if example_name == "macro" else ".xlsx"
-    
-    c_excel_file = c_output_dir / f"{c_file_name}{extension}"
+    c_excel_file = c_output_dir / f"{example_name}{extension}"
     
     if not c_excel_file.exists():
         print(f"C Excel file not found: {c_excel_file}")
@@ -115,7 +97,7 @@ def cleanup_excel_file(example_name, zig_excel_file):
     extension = ".xlsm" if example_name == "macro" else ".xlsx"
     
     # Destination path 
-    dest_file = zig_output_dir / f"{example_name}{extension}"
+    dest_file = zig_output_dir / f"zig-{example_name}{extension}"
     
     try:
         # Move the file
@@ -177,13 +159,8 @@ def take_screenshot(example_name, top_crop=25, bottom_crop=155, left_crop=0, rig
     screenshots_dir.mkdir(parents=True, exist_ok=True)
     comparison_dir.mkdir(parents=True, exist_ok=True)
     
-    # Handle special case for conditional_format1
-    screenshot_name = example_name
-    if example_name == "conditional_format1":
-        screenshot_name = "conditional_format_simple"
-    
     # Determine the screenshot filename
-    screenshot_file = screenshots_dir / f"comparison_{screenshot_name}.png"
+    screenshot_file = screenshots_dir / f"comparison_{example_name}.png"
     
     # Build the example
     if not build_example(example_name):
