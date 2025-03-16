@@ -1,0 +1,6 @@
+Comparison of anatomy screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/anatomy.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-anatomy.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_anatomy.png
+
+RESULT: MATCH - User confirmed visual match

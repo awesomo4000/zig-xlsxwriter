@@ -1,0 +1,6 @@
+Comparison of array_formula screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/array_formula.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-array_formula.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_array_formula.png
+
+RESULT: MATCH - User confirmed visual match

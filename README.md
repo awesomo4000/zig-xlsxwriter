@@ -10,7 +10,59 @@ Excel. It cannot be used to modify an existing file.
 
 - [zig v0.12.0 or higher](https://ziglang.org/download)
 - [libxlsxwriter](https://github.com/jmcnamara/libxlsxwriter)
+- Python 3.6+ with PIL (Pillow) and numpy for verification tools
+- Microsoft Excel for visual verification
 
+
+## Development Workflow
+
+### Building Examples
+
+To build and run a specific example:
+
+```bash
+zig build run -Dexample=hello
+```
+
+### Verifying Examples
+
+The project includes a verification workflow to ensure Zig examples match their C counterparts:
+
+1. Check example status and find next one to work on:
+   ```bash
+   # List all examples and their status
+   python3 utils/evaluate.py
+   
+   # Or check a specific example
+   python3 utils/evaluate.py example_name
+   ```
+
+2. After implementing/modifying an example, verify it:
+   ```bash
+   # Build and run the example
+   zig build run -Dexample=example_name
+
+   # Create screenshots and verify visual match
+   python3 utils/create_screenshots.py example_name
+
+   # Confirm full verification
+   python3 utils/evaluate.py example_name
+   ```
+
+The verification process checks:
+- If the Zig implementation exists
+- If screenshots match between C and Zig outputs
+- If the implementation is up to date
+
+Status indicators:
+- ✅ DONE: Fully implemented and verified
+- ⚠️ IN PROGRESS: Implemented but needs verification
+- ❌ NOT STARTED: Not implemented yet
+
+Exit codes from evaluate.py:
+- 0: Example is fully implemented and verified
+- 1: Example is implemented but needs verification
+- 2: Example is not implemented
 
 ## Example
 
@@ -76,4 +128,3 @@ pub fn main() void {
     // Save the workbook and free any allocated memory.
     _ = xlsxwriter.workbook_close(workbook);
 }
-```

@@ -1,0 +1,6 @@
+Comparison of chart_clustered screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_clustered.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_clustered.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_clustered.png
+
+RESULT: MATCH - User confirmed visual match

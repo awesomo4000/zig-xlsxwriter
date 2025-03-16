@@ -1,0 +1,6 @@
+Comparison of autofilter screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/autofilter.xlsx
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-autofilter.xlsx
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_autofilter.png
+
+RESULT: MATCH - User confirmed visual match

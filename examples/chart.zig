@@ -3,13 +3,13 @@ const xlsxwriter = @import("xlsxwriter");
 pub fn main() void {
 
     // Create a new workbook and add a worksheet.
-    const workbook: ?*xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("out/zig-chart.xlsx");
+    const workbook: ?*xlsxwriter.lxw_workbook = xlsxwriter.workbook_new("zig-chart.xlsx");
     const worksheet: ?*xlsxwriter.lxw_worksheet = xlsxwriter.workbook_add_worksheet(workbook, null);
 
-    // Write some data for the chart. */
+    // Write some data for the chart.
     write_worksheet_data(worksheet);
 
-    // Create a chart object. */
+    // Create a chart object.
     const chart: ?*xlsxwriter.lxw_chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_COLUMN);
 
     // Configure the chart. In simplest case we just add some value data
@@ -36,7 +36,10 @@ pub fn main() void {
     _ = xlsxwriter.chart_title_set_name_font(chart, &font);
 
     // Insert the chart into the worksheet.
-    _ = xlsxwriter.worksheet_insert_chart(worksheet, xlsxwriter.CELL("B7"), xlsxwriter.COLS("A1"), chart);
+    // CELL("B7") expands to row, col
+    const row_b7 = xlsxwriter.lxw_name_to_row("B7");
+    const col_b7 = xlsxwriter.lxw_name_to_col("B7");
+    _ = xlsxwriter.worksheet_insert_chart(worksheet, row_b7, col_b7, chart);
 
     _ = xlsxwriter.workbook_close(workbook);
 }
@@ -50,13 +53,9 @@ fn write_worksheet_data(worksheet: ?*xlsxwriter.lxw_worksheet) void {
         [3]f64{ 5, 10, 15 },
     };
 
-    var row: u32 = 0;
-    var col: u16 = 0;
-    {
-        while (row < 5) : (row += 1) {
-            while (col < 3) : (col += 1) {
-                _ = xlsxwriter.worksheet_write_number(worksheet, row, col, data[row][col], null);
-            }
+    for (data, 0..) |row_data, row| {
+        for (row_data, 0..) |value, col| {
+            _ = xlsxwriter.worksheet_write_number(worksheet, @intCast(row), @intCast(col), value, null);
         }
     }
 }

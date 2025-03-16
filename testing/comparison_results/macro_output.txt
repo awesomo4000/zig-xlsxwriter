@@ -1,0 +1,6 @@
+Comparison of macro screenshots:
+C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/macro.xlsm
+Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-macro.xlsm
+Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_macro.png
+
+RESULT: MATCH
