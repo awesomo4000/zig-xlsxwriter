@@ -16,17 +16,6 @@ import argparse
 from PIL import Image
 
 
-def load_examples(filename):
-    """Load examples from a file into a set."""
-    try:
-        with open(filename, 'r') as f:
-            # Strip whitespace and filter out empty lines
-            return {line.strip() for line in f if line.strip()}
-    except FileNotFoundError:
-        print(f"Error: {filename} not found.")
-        return set()
-
-
 def check_screenshot_exists(example_name):
     """Check if a screenshot exists for the Zig implementation."""
     root_dir = Path(__file__).parent.parent
@@ -34,8 +23,6 @@ def check_screenshot_exists(example_name):
     
     # Handle special case for conditional_format1
     screenshot_name = example_name
-    if example_name == "conditional_format1":
-        screenshot_name = "conditional_format_simple"
     
     # Check for combined screenshot
     screenshot_file = screenshots_dir / f"comparison_{screenshot_name}.png"
@@ -46,12 +33,18 @@ def check_screenshot_exists(example_name):
 def find_examples_without_screenshots():
     """Find examples that don't have Zig screenshots."""
     root_dir = Path(__file__).parent.parent
+    examples_dir = root_dir / "examples"
     
-    # Load done and todo examples
-    done_examples = load_examples(root_dir / "done.txt")
-    todo_examples = load_examples(root_dir / "todo.txt")
+    # Get all .zig files from examples directory
+    all_examples = []
+    for file in examples_dir.glob("*.zig"):
+        # Remove .zig extension and any "example_" prefix
+        example_name = file.stem
+        if example_name.startswith("example_"):
+            example_name = example_name[8:]
+        all_examples.append(example_name)
     
-    all_examples = sorted(done_examples.union(todo_examples))
+    all_examples.sort()
     missing_screenshots = []
     
     for example in all_examples:
@@ -134,13 +127,18 @@ def cleanup_excel_file(example_name, zig_excel_file):
         return False
 
 
-def process_screenshot(screenshot_file, top_crop=25, bottom_crop=30):
-    """Post-process screenshot to crop pixels from top and bottom.
-    Crops 25px from top (Excel title bar) and 30px from bottom (Excel status bar)."""
+def process_screenshot(screenshot_file, top_crop=25, bottom_crop=155, left_crop=0, right_crop=0):
+    """Post-process screenshot to crop pixels from edges.
+    Default crops 25px from top (Excel title bar) and 155px from bottom (Excel status bar)."""
     try:
         with Image.open(screenshot_file) as img:
             width, height = img.size
-            cropped = img.crop((0, top_crop, width, height - bottom_crop))
+            cropped = img.crop((
+                left_crop,
+                top_crop, 
+                width - right_crop, 
+                height - bottom_crop
+            ))
             cropped.save(screenshot_file)
             return True
     except Exception as e:
@@ -148,7 +146,7 @@ def process_screenshot(screenshot_file, top_crop=25, bottom_crop=30):
         return False
 
 
-def take_screenshot(example_name):
+def take_screenshot(example_name, top_crop=25, bottom_crop=155, left_crop=0, right_crop=0):
     """
     Take a screenshot of both C and Zig Excel files side by side.
     
@@ -159,6 +157,13 @@ def take_screenshot(example_name):
     4. Opens the screenshot for the user to view
     5. Asks the user if the outputs match
     6. If they match, moves the Zig Excel file to the zig-output-xls directory
+    
+    Args:
+        example_name: Name of the example to screenshot
+        top_crop: Pixels to crop from top (default: 25 for Excel title bar)
+        bottom_crop: Pixels to crop from bottom (default: 155 for Excel status bar)
+        left_crop: Pixels to crop from left (default: 0)
+        right_crop: Pixels to crop from right (default: 0)
     """
     if sys.platform != "darwin":
         print("This script currently only supports macOS for automatic screenshots.")
@@ -226,7 +231,7 @@ def take_screenshot(example_name):
         ], check=True)
         
         # Post-process the screenshot
-        if process_screenshot(screenshot_file):
+        if process_screenshot(screenshot_file, top_crop, bottom_crop, left_crop, right_crop):
             print("Screenshot processed successfully")
         else:
             print("Warning: Failed to process screenshot")
@@ -295,12 +300,63 @@ def take_screenshot(example_name):
         return False
 
 
+def take_simple_screenshot(screenshot_file, top_crop=25, bottom_crop=30, left_crop=0, right_crop=0):
+    """Take and crop a screenshot without Excel file handling."""
+    if sys.platform != "darwin":
+        print("This script currently only supports macOS for automatic screenshots.")
+        return False
+
+    print(f"Taking screenshot and saving to: {screenshot_file}")
+    try:
+        subprocess.run([
+            "screencapture",
+            "-o",  # Capture window contents only
+            "-x",  # No sound
+            str(screenshot_file)
+        ], check=True)
+        
+        if process_screenshot(screenshot_file, top_crop, bottom_crop, left_crop, right_crop):
+            print("Screenshot processed successfully")
+            return True
+        else:
+            print("Warning: Failed to process screenshot")
+            return False
+            
+    except subprocess.CalledProcessError as e:
+        print(f"Error taking screenshot: {e}")
+        return False
+
+
+def crop_existing_file(file_path, top_crop=25, bottom_crop=30, left_crop=0, right_crop=0):
+    """Just crop an existing PNG file."""
+    try:
+        with Image.open(file_path) as img:
+            width, height = img.size
+            cropped = img.crop((
+                left_crop,
+                top_crop, 
+                width - right_crop, 
+                height - bottom_crop
+            ))
+            cropped.save(file_path)
+            print("✅ File cropped successfully")
+            return True
+    except Exception as e:
+        print(f"❌ Error cropping file: {e}")
+        return False
+
+
 def main():
     """Main function to create screenshots for Zig examples."""
     parser = argparse.ArgumentParser(description="Create screenshots for Zig examples")
     parser.add_argument("example", nargs="?", help="Example name to create screenshot for")
     parser.add_argument("--list", action="store_true", help="List examples without screenshots")
     parser.add_argument("--cleanup", action="store_true", help="Cleanup existing Zig Excel files in the project root")
+    parser.add_argument("--left", type=int, default=0, help="Pixels to crop from left")
+    parser.add_argument("--right", type=int, default=0, help="Pixels to crop from right")
+    parser.add_argument("--top", type=int, default=0, help="Pixels to crop from top")
+    parser.add_argument("--bottom", type=int, default=0, help="Pixels to crop from bottom")
+    parser.add_argument("--crop", help="Just crop an existing PNG file")
     
     args = parser.parse_args()
     
@@ -339,13 +395,28 @@ def main():
             print("All examples have screenshots!")
         return 0
     
+    if args.crop:
+        return 0 if crop_existing_file(
+            args.crop,
+            args.top,
+            args.bottom,
+            args.left,
+            args.right,
+        ) else 1
+    
     if not args.example:
         parser.print_help()
         return 1
     
-    # Take screenshot
+    # Take screenshot - use Excel-specific defaults
     print(f"\n=== Creating screenshot for {args.example} ===")
-    success = take_screenshot(args.example)
+    success = take_screenshot(
+        args.example,
+        top_crop=25 if args.top == 0 else args.top,
+        bottom_crop=155 if args.bottom == 0 else args.bottom,
+        left_crop=args.left,
+        right_crop=args.right,
+    )
     
     return 0 if success else 1
 

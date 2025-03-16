@@ -13,6 +13,7 @@ import re
 import argparse
 import time
 from pathlib import Path
+import shutil
 
 # Add function to clear terminal screen
 def clear_screen():
@@ -323,12 +324,47 @@ def get_c_excel_file(example_name):
     return c_excel_file
 
 
+def cleanup_excel_file(example_name, zig_excel_file):
+    """
+    Move the Zig-generated Excel file to the zig-output-xls directory.
+    
+    Args:
+        example_name: The name of the example
+        zig_excel_file: Path to the Zig-generated Excel file
+    
+    Returns:
+        bool: True if the file was moved successfully, False otherwise
+    """
+    root_dir = Path(__file__).parent.parent
+    zig_output_dir = root_dir / "testing" / "zig-output-xls"
+    
+    # Create the directory if it doesn't exist
+    zig_output_dir.mkdir(parents=True, exist_ok=True)
+    
+    # Special case for macro example which uses .xlsm
+    extension = ".xlsm" if example_name == "macro" else ".xlsx"
+    
+    # Destination path 
+    dest_file = zig_output_dir / f"{example_name}{extension}"
+    
+    try:
+        # Move the file
+        shutil.move(str(zig_excel_file), str(dest_file))
+        print(f"✅ Moved Excel file to: {dest_file}")
+        return True
+    except Exception as e:
+        print(f"❌ Error moving Excel file: {e}")
+        return False
+
+
 def main():
     """Main function to evaluate an example."""
     parser = argparse.ArgumentParser(description="Evaluate the implementation status of examples")
     parser.add_argument("example", nargs="?", help="Example name to evaluate")
     parser.add_argument("--monitor", type=int, nargs="?", const=5, 
                         help="Monitor mode: continuously update status every N seconds (default: 5)")
+    parser.add_argument("--cleanup", action="store_true",
+                        help="Move generated Excel file to zig-output-xls directory")
     
     args = parser.parse_args()
     
@@ -372,7 +408,21 @@ def main():
         # No example specified, list all examples
         list_all_examples()
         return 0
-    
+
+    # Handle cleanup if requested
+    if args.cleanup:
+        root_dir = Path(__file__).parent.parent
+        extension = ".xlsm" if args.example == "macro" else ".xlsx"
+        zig_excel_file = root_dir / f"zig-{args.example}{extension}"
+        
+        if not zig_excel_file.exists():
+            print(f"❌ No Excel file found at: {zig_excel_file}")
+            return 1
+            
+        if cleanup_excel_file(args.example, zig_excel_file):
+            return 0
+        return 1
+
     # Determine status based on implementation and verification
     status, message = get_example_status(args.example)
     print(message)
