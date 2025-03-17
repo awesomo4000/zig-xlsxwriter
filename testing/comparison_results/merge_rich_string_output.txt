@@ -1,0 +1,6 @@
+Comparison of merge_rich_string screenshots:
+C Excel file: testing/c-output-xls/merge_rich_string.xlsx
+Zig Excel file: testing/zig-output-xls/zig-merge_rich_string.xlsx
+Screenshot: testing/screenshots/comparison_merge_rich_string.png
+
+RESULT: MATCH - User confirmed visual match

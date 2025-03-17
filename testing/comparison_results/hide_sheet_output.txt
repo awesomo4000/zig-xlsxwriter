@@ -1,0 +1,6 @@
+Comparison of hide_sheet screenshots:
+C Excel file: testing/c-output-xls/hide_sheet.xlsx
+Zig Excel file: testing/zig-output-xls/zig-hide_sheet.xlsx
+Screenshot: testing/screenshots/comparison_hide_sheet.png
+
+RESULT: MATCH - User confirmed visual match

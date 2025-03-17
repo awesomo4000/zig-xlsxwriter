@@ -8,7 +8,7 @@ Excel. It cannot be used to modify an existing file.
 
 ## Requirements
 
-- [zig v0.12.0 or higher](https://ziglang.org/download)
+- [zig v0.14.0 or higher](https://ziglang.org/download)
 - [libxlsxwriter](https://github.com/jmcnamara/libxlsxwriter)
 - Python 3.6+ with PIL (Pillow) and numpy for verification tools
 - Microsoft Excel for visual verification
@@ -35,7 +35,7 @@ zig build run -Dexample=hello
   They are all formatted as zig-{example}.xlsx .
 - The source code for libxlsxwriter is in the $HOME/src/libxlsxwriter/ directory.
 - Try to avoid using [*c] , for null terminated C strings, prefer [:0]const u8 instead of [*c]const u8
-
+- For examples that read a file at runtime, to test the functionality, we're using zig's @embedFile to put the file in the binary, then extracting it to a temp directory which gets cleaned up. This way runtime testing of examples won't fail if they are run outside of the directory where the original test file is located. 
 
 ### Verifying Examples
 

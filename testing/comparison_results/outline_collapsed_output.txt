@@ -1,0 +1,6 @@
+Comparison of outline_collapsed screenshots:
+C Excel file: testing/c-output-xls/outline_collapsed.xlsx
+Zig Excel file: testing/zig-output-xls/zig-outline_collapsed.xlsx
+Screenshot: testing/screenshots/comparison_outline_collapsed.png
+
+RESULT: MATCH - User confirmed visual match

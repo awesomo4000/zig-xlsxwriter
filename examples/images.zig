@@ -4,9 +4,30 @@
 // Copyright 2014-2025, John McNamara, jmcnamara@cpan.org
 //
 
+const std = @import("std");
 const xlsxwriter = @import("xlsxwriter");
+const mktmp = @import("mktmp");
+
+// Embed the logo image directly into the executable
+const logo_data = @embedFile("logo.png");
 
 pub fn main() !void {
+    // Create a temporary file for the logo using the TmpFile API
+    var arena = std.heap.ArenaAllocator.init(
+        std.heap.page_allocator,
+    );
+    defer arena.deinit();
+    const allocator = arena.allocator();
+
+    var tmp_file = try mktmp.TmpFile.create(
+        allocator,
+        "logo_",
+    );
+    defer tmp_file.cleanUp();
+
+    // Write the embedded data to the temporary file
+    try tmp_file.write(logo_data);
+
     // Create a new workbook and add a worksheet.
     const workbook = xlsxwriter.workbook_new("zig-images.xlsx");
     const worksheet = xlsxwriter.workbook_add_worksheet(workbook, null);
@@ -25,7 +46,7 @@ pub fn main() !void {
 
     const row_b2 = xlsxwriter.lxw_name_to_row("B2");
     const col_b2 = xlsxwriter.lxw_name_to_col("B2");
-    _ = xlsxwriter.worksheet_insert_image(worksheet, row_b2, col_b2, "logo.png");
+    _ = xlsxwriter.worksheet_insert_image(worksheet, row_b2, col_b2, tmp_file.path.ptr);
 
     // Insert an image offset in the cell.
     const row_a12 = xlsxwriter.lxw_name_to_row("A12");
@@ -45,7 +66,7 @@ pub fn main() !void {
 
     const row_b12 = xlsxwriter.lxw_name_to_row("B12");
     const col_b12 = xlsxwriter.lxw_name_to_col("B12");
-    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b12, col_b12, "logo.png", &options1);
+    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b12, col_b12, tmp_file.path.ptr, &options1);
 
     // Insert an image with scaling.
     const row_a22 = xlsxwriter.lxw_name_to_row("A22");
@@ -65,7 +86,7 @@ pub fn main() !void {
 
     const row_b22 = xlsxwriter.lxw_name_to_row("B22");
     const col_b22 = xlsxwriter.lxw_name_to_col("B22");
-    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b22, col_b22, "logo.png", &options2);
+    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b22, col_b22, tmp_file.path.ptr, &options2);
 
     // Insert an image with a hyperlink.
     const row_a32 = xlsxwriter.lxw_name_to_row("A32");
@@ -85,7 +106,7 @@ pub fn main() !void {
 
     const row_b32 = xlsxwriter.lxw_name_to_row("B32");
     const col_b32 = xlsxwriter.lxw_name_to_col("B32");
-    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b32, col_b32, "logo.png", &options3);
+    _ = xlsxwriter.worksheet_insert_image_opt(worksheet, row_b32, col_b32, tmp_file.path.ptr, &options3);
 
     _ = xlsxwriter.workbook_close(workbook);
 }

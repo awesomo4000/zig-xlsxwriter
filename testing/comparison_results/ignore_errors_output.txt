@@ -1,0 +1,6 @@
+Comparison of ignore_errors screenshots:
+C Excel file: testing/c-output-xls/ignore_errors.xlsx
+Zig Excel file: testing/zig-output-xls/zig-ignore_errors.xlsx
+Screenshot: testing/screenshots/comparison_ignore_errors.png
+
+RESULT: MATCH - User confirmed visual match

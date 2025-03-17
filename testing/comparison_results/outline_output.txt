@@ -1,0 +1,6 @@
+Comparison of outline screenshots:
+C Excel file: testing/c-output-xls/outline.xlsx
+Zig Excel file: testing/zig-output-xls/zig-outline.xlsx
+Screenshot: testing/screenshots/comparison_outline.png
+
+RESULT: MATCH - User confirmed visual match

@@ -1,0 +1,6 @@
+Comparison of lambda screenshots:
+C Excel file: testing/c-output-xls/lambda.xlsx
+Zig Excel file: testing/zig-output-xls/zig-lambda.xlsx
+Screenshot: testing/screenshots/comparison_lambda.png
+
+RESULT: MATCH - User confirmed visual match
