@@ -1,0 +1,6 @@
+Comparison of panes screenshots:
+C Excel file: testing/c-output-xls/panes.xlsx
+Zig Excel file: testing/zig-output-xls/zig-panes.xlsx
+Screenshot: testing/screenshots/comparison_panes.png
+
+RESULT: MATCH - User confirmed visual match

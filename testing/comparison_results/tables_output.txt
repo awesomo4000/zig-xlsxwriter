@@ -1,0 +1,6 @@
+Comparison of tables screenshots:
+C Excel file: testing/c-output-xls/tables.xlsx
+Zig Excel file: testing/zig-output-xls/zig-tables.xlsx
+Screenshot: testing/screenshots/comparison_tables.png
+
+RESULT: MATCH - User confirmed visual match

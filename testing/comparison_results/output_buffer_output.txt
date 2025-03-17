@@ -1,0 +1,6 @@
+Comparison of output_buffer screenshots:
+C Excel file: testing/c-output-xls/output_buffer.xlsx
+Zig Excel file: testing/zig-output-xls/zig-output_buffer.xlsx
+Screenshot: testing/screenshots/comparison_output_buffer.png
+
+RESULT: MATCH - User confirmed visual match
