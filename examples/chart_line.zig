@@ -48,7 +48,9 @@ pub fn main() !void {
     // Write some data for the chart
     writeWorksheetData(worksheet, bold);
 
+    //
     // Chart 1. Create a line chart
+    //
     var chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_LINE);
 
     // Add the first series to the chart
@@ -71,13 +73,15 @@ pub fn main() !void {
     _ = xlsxwriter.chart_axis_set_name(chart.*.y_axis, "Sample length (mm)");
 
     // Set an Excel chart style
-    _ = xlsxwriter.chart_set_style(chart, 11);
+    _ = xlsxwriter.chart_set_style(chart, 10);
 
     // Insert the chart into the worksheet
     _ = xlsxwriter.worksheet_insert_chart(worksheet, 1, 4, chart);
 
-    // Chart 2. Create a scatter chart with straight lines and markers
-    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_SCATTER_STRAIGHT_WITH_MARKERS);
+    //
+    // Chart 2. Create a stacked line chart.
+    //
+    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_LINE_STACKED);
 
     // Add the first series to the chart
     series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$B$2:$B$7");
@@ -102,8 +106,10 @@ pub fn main() !void {
     // Insert the chart into the worksheet
     _ = xlsxwriter.worksheet_insert_chart(worksheet, 17, 4, chart);
 
-    // Chart 3. Create a scatter chart with straight lines
-    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_SCATTER_STRAIGHT);
+    //
+    // Chart 3. Create a percent stacked line chart.
+    //
+    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_LINE_STACKED_PERCENT);
 
     // Add the first series to the chart
     series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$B$2:$B$7");
@@ -127,58 +133,6 @@ pub fn main() !void {
 
     // Insert the chart into the worksheet
     _ = xlsxwriter.worksheet_insert_chart(worksheet, 33, 4, chart);
-
-    // Chart 4. Create a scatter chart with smooth lines and markers
-    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_SCATTER_SMOOTH_WITH_MARKERS);
-
-    // Add the first series to the chart
-    series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$B$2:$B$7");
-
-    // Set the name for the series instead of the default "Series 1"
-    _ = xlsxwriter.chart_series_set_name(series, "=Sheet1!$B$1");
-
-    // Add the second series to the chart
-    series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$C$2:$C$7");
-
-    // Set the name for the series instead of the default "Series 2"
-    _ = xlsxwriter.chart_series_set_name(series, "=Sheet1!$C$1");
-
-    // Add a chart title and some axis labels
-    _ = xlsxwriter.chart_title_set_name(chart, "Results of sample analysis");
-    _ = xlsxwriter.chart_axis_set_name(chart.*.x_axis, "Test number");
-    _ = xlsxwriter.chart_axis_set_name(chart.*.y_axis, "Sample length (mm)");
-
-    // Set an Excel chart style
-    _ = xlsxwriter.chart_set_style(chart, 14);
-
-    // Insert the chart into the worksheet
-    _ = xlsxwriter.worksheet_insert_chart(worksheet, 49, 4, chart);
-
-    // Chart 5. Create a scatter chart with smooth lines
-    chart = xlsxwriter.workbook_add_chart(workbook, xlsxwriter.LXW_CHART_SCATTER_SMOOTH);
-
-    // Add the first series to the chart
-    series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$B$2:$B$7");
-
-    // Set the name for the series instead of the default "Series 1"
-    _ = xlsxwriter.chart_series_set_name(series, "=Sheet1!$B$1");
-
-    // Add the second series to the chart
-    series = xlsxwriter.chart_add_series(chart, "=Sheet1!$A$2:$A$7", "=Sheet1!$C$2:$C$7");
-
-    // Set the name for the series instead of the default "Series 2"
-    _ = xlsxwriter.chart_series_set_name(series, "=Sheet1!$C$1");
-
-    // Add a chart title and some axis labels
-    _ = xlsxwriter.chart_title_set_name(chart, "Results of sample analysis");
-    _ = xlsxwriter.chart_axis_set_name(chart.*.x_axis, "Test number");
-    _ = xlsxwriter.chart_axis_set_name(chart.*.y_axis, "Sample length (mm)");
-
-    // Set an Excel chart style
-    _ = xlsxwriter.chart_set_style(chart, 15);
-
-    // Insert the chart into the worksheet
-    _ = xlsxwriter.worksheet_insert_chart(worksheet, 65, 4, chart);
 
     _ = xlsxwriter.workbook_close(workbook);
 }
