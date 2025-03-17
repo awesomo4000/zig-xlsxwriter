@@ -1,6 +1,6 @@
 //
-// Example of cell locking and formula hiding in an Excel worksheet using
-// libxlsxwriter.
+// Example of cell locking and formula hiding in an Excel
+// worksheet using libxlsxwriter.
 //
 // Copyright 2014-2025, John McNamara, jmcnamara@cpan.org
 //
