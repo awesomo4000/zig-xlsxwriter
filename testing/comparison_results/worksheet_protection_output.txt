@@ -1,0 +1,6 @@
+Comparison of worksheet_protection screenshots:
+C Excel file: testing/c-output-xls/worksheet_protection.xlsx
+Zig Excel file: testing/zig-output-xls/zig-worksheet_protection.xlsx
+Screenshot: testing/screenshots/comparison_worksheet_protection.png
+
+RESULT: MATCH - User confirmed visual match

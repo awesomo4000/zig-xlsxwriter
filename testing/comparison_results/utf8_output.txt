@@ -1,0 +1,6 @@
+Comparison of utf8 screenshots:
+C Excel file: testing/c-output-xls/utf8.xlsx
+Zig Excel file: testing/zig-output-xls/zig-utf8.xlsx
+Screenshot: testing/screenshots/comparison_utf8.png
+
+RESULT: MATCH - User confirmed visual match

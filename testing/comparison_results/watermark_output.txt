@@ -1,0 +1,6 @@
+Comparison of watermark screenshots:
+C Excel file: testing/c-output-xls/watermark.xlsx
+Zig Excel file: testing/zig-output-xls/zig-watermark.xlsx
+Screenshot: testing/screenshots/comparison_watermark.png
+
+RESULT: MATCH - User confirmed visual match

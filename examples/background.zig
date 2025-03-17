@@ -34,6 +34,7 @@ pub fn main() !void {
         xlsxwriter.workbook_new(
             "zig-background.xlsx",
         );
+
     const worksheet =
         xlsxwriter.workbook_add_worksheet(
             workbook,
