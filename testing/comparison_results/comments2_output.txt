@@ -1,0 +1,6 @@
+Comparison of comments2 screenshots:
+C Excel file: testing/c-output-xls/comments2.xlsx
+Zig Excel file: testing/zig-output-xls/zig-comments2.xlsx
+Screenshot: testing/screenshots/comparison_comments2.png
+
+RESULT: MATCH - User confirmed visual match

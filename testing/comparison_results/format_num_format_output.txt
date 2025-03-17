@@ -1,0 +1,6 @@
+Comparison of format_num_format screenshots:
+C Excel file: testing/c-output-xls/format_num_format.xlsx
+Zig Excel file: testing/zig-output-xls/zig-format_num_format.xlsx
+Screenshot: testing/screenshots/comparison_format_num_format.png
+
+RESULT: MATCH - User confirmed visual match

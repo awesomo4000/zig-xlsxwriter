@@ -102,7 +102,9 @@ def cleanup_excel_file(example_name, zig_excel_file):
     try:
         # Move the file
         shutil.move(str(zig_excel_file), str(dest_file))
-        print(f"✅ Moved Excel file to: {dest_file}")
+        # Print relative path instead of full path
+        relative_path = f"testing/zig-output-xls/zig-{example_name}{extension}"
+        print(f"✅ Moved Excel file to: {relative_path}")
         return True
     except Exception as e:
         print(f"❌ Error moving Excel file: {e}")
@@ -198,7 +200,8 @@ def take_screenshot(example_name, top_crop=25, bottom_crop=155, left_crop=0, rig
     time.sleep(3)
     
     # Take screenshot using screencapture
-    print(f"Taking screenshot and saving to: {screenshot_file}")
+    relative_screenshot_path = f"testing/screenshots/comparison_{example_name}.png"
+    print(f"Taking screenshot and saving to: {relative_screenshot_path}")
     try:
         subprocess.run([
             "screencapture",
@@ -219,7 +222,7 @@ def take_screenshot(example_name, top_crop=25, bottom_crop=155, left_crop=0, rig
     
     # Check if the screenshot was saved
     if screenshot_file.exists():
-        print(f"Screenshot saved: {screenshot_file}")
+        print(f"Screenshot saved: {relative_screenshot_path}")
         
         # Open the screenshot for the user to view
         print("\nOpening screenshot for review...")
@@ -256,9 +259,14 @@ def take_screenshot(example_name, top_crop=25, bottom_crop=155, left_crop=0, rig
         result_file = comparison_dir / f"{example_name}_output.txt"
         with open(result_file, 'w') as f:
             f.write(f"Comparison of {example_name} screenshots:\n")
-            f.write(f"C Excel file: {c_excel_file}\n")
-            f.write(f"Zig Excel file: {zig_excel_file}\n")
-            f.write(f"Screenshot: {screenshot_file}\n\n")
+            # Use relative paths instead of full paths
+            c_relative_path = f"testing/c-output-xls/{os.path.basename(c_excel_file)}"
+            zig_relative_path = f"testing/zig-output-xls/zig-{example_name}{extension}"
+            screenshot_relative_path = f"testing/screenshots/comparison_{example_name}.png"
+            
+            f.write(f"C Excel file: {c_relative_path}\n")
+            f.write(f"Zig Excel file: {zig_relative_path}\n")
+            f.write(f"Screenshot: {screenshot_relative_path}\n\n")
             
             if user_input == 'y':
                 f.write("RESULT: MATCH - User confirmed visual match\n")

@@ -1,0 +1,6 @@
+Comparison of doc_custom_properties screenshots:
+C Excel file: testing/c-output-xls/doc_custom_properties.xlsx
+Zig Excel file: testing/zig-output-xls/zig-doc_custom_properties.xlsx
+Screenshot: testing/screenshots/comparison_doc_custom_properties.png
+
+RESULT: MATCH - User confirmed visual match

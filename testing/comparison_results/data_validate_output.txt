@@ -1,0 +1,6 @@
+Comparison of data_validate screenshots:
+C Excel file: testing/c-output-xls/data_validate.xlsx
+Zig Excel file: testing/zig-output-xls/zig-data_validate.xlsx
+Screenshot: testing/screenshots/comparison_data_validate.png
+
+RESULT: MATCH - User confirmed visual match

@@ -1,0 +1,6 @@
+Comparison of format_font screenshots:
+C Excel file: testing/c-output-xls/format_font.xlsx
+Zig Excel file: testing/zig-output-xls/zig-format_font.xlsx
+Screenshot: testing/screenshots/comparison_format_font.png
+
+RESULT: MATCH - User confirmed visual match

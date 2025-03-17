@@ -1,0 +1,6 @@
+Comparison of embed_images screenshots:
+C Excel file: testing/c-output-xls/embed_images.xlsx
+Zig Excel file: testing/zig-output-xls/zig-embed_images.xlsx
+Screenshot: testing/screenshots/comparison_embed_images.png
+
+RESULT: MATCH - User confirmed visual match

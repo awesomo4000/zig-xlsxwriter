@@ -1,0 +1,6 @@
+Comparison of demo screenshots:
+C Excel file: testing/c-output-xls/demo.xlsx
+Zig Excel file: testing/zig-output-xls/zig-demo.xlsx
+Screenshot: testing/screenshots/comparison_demo.png
+
+RESULT: MATCH - User confirmed visual match

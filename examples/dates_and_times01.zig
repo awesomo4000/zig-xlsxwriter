@@ -35,5 +35,9 @@ pub fn main() !void {
     // dates and times. This is for demonstration purposes only.
     _ = xlsxwriter.worksheet_write_number(worksheet, 1, 0, number, format); // Feb 28 2013 12:00 PM
 
-    _ = xlsxwriter.workbook_close(workbook);
+    const result = xlsxwriter.workbook_close(workbook);
+    if (result != xlsxwriter.LXW_NO_ERROR) {
+        std.debug.print("Error closing workbook: {d}\n", .{result});
+        return error.WorkbookCloseFailed;
+    }
 }

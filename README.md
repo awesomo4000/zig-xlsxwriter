@@ -33,6 +33,9 @@ zig build run -Dexample=hello
   to implement.
 - The skeleton files have the proper output filenames for the Zig versions.
   They are all formatted as zig-{example}.xlsx .
+- The source code for libxlsxwriter is in the $HOME/src/libxlsxwriter/ directory.
+- Try to avoid using [*c] , for null terminated C strings, prefer [:0]const u8 instead of [*c]const u8
+
 
 ### Verifying Examples
 

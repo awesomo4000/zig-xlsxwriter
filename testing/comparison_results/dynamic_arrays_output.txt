@@ -1,0 +1,6 @@
+Comparison of dynamic_arrays screenshots:
+C Excel file: testing/c-output-xls/dynamic_arrays.xlsx
+Zig Excel file: testing/zig-output-xls/zig-dynamic_arrays.xlsx
+Screenshot: testing/screenshots/comparison_dynamic_arrays.png
+
+RESULT: MATCH - User confirmed visual match

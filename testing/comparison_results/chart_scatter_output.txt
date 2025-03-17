@@ -1,6 +1,6 @@
 Comparison of chart_scatter screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_scatter.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_scatter.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_scatter.png
+C Excel file: testing/c-output-xls/chart_scatter.xlsx
+Zig Excel file: testing/zig-output-xls/zig-chart_scatter.xlsx
+Screenshot: testing/screenshots/comparison_chart_scatter.png
 
 RESULT: MATCH - User confirmed visual match

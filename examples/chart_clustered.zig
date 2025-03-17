@@ -207,7 +207,7 @@ fn writeWorksheetData(worksheet: *xlsxwriter.lxw_worksheet, bold: *xlsxwriter.lx
 
 pub fn main() !void {
     const workbook = xlsxwriter.workbook_new(
-        "chart_clustered.xlsx",
+        "zig-chart_clustered.xlsx",
     );
     const worksheet = xlsxwriter.workbook_add_worksheet(
         workbook,

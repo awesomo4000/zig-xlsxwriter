@@ -1,0 +1,6 @@
+Comparison of dates_and_times04 screenshots:
+C Excel file: testing/c-output-xls/dates_and_times04.xlsx
+Zig Excel file: testing/zig-output-xls/zig-dates_and_times04.xlsx
+Screenshot: testing/screenshots/comparison_dates_and_times04.png
+
+RESULT: MATCH - User confirmed visual match

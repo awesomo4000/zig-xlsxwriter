@@ -1,6 +1,6 @@
 Comparison of background screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/background.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-background.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_background.png
+C Excel file: testing/c-output-xls/background.xlsx
+Zig Excel file: testing/zig-output-xls/zig-background.xlsx
+Screenshot: testing/screenshots/comparison_background.png
 
 RESULT: MATCH - User confirmed visual match

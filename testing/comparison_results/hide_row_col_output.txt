@@ -1,0 +1,6 @@
+Comparison of hide_row_col screenshots:
+C Excel file: testing/c-output-xls/hide_row_col.xlsx
+Zig Excel file: testing/zig-output-xls/zig-hide_row_col.xlsx
+Screenshot: testing/screenshots/comparison_hide_row_col.png
+
+RESULT: MATCH - User confirmed visual match

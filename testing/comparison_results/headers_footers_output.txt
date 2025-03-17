@@ -1,0 +1,6 @@
+Comparison of headers_footers screenshots:
+C Excel file: testing/c-output-xls/headers_footers.xlsx
+Zig Excel file: testing/zig-output-xls/zig-headers_footers.xlsx
+Screenshot: testing/screenshots/comparison_headers_footers.png
+
+RESULT: MATCH - User confirmed visual match

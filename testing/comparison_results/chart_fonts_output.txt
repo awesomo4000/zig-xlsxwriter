@@ -1,6 +1,6 @@
 Comparison of chart_fonts screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_fonts.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_fonts.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_fonts.png
+C Excel file: testing/c-output-xls/chart_fonts.xlsx
+Zig Excel file: testing/zig-output-xls/zig-chart_fonts.xlsx
+Screenshot: testing/screenshots/comparison_chart_fonts.png
 
 RESULT: MATCH - User confirmed visual match

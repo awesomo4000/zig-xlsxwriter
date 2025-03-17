@@ -1,0 +1,6 @@
+Comparison of conditional_format2 screenshots:
+C Excel file: testing/c-output-xls/conditional_format2.xlsx
+Zig Excel file: testing/zig-output-xls/zig-conditional_format2.xlsx
+Screenshot: testing/screenshots/comparison_conditional_format2.png
+
+RESULT: MATCH - User confirmed visual match

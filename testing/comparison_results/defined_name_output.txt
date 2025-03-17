@@ -1,0 +1,6 @@
+Comparison of defined_name screenshots:
+C Excel file: testing/c-output-xls/defined_name.xlsx
+Zig Excel file: testing/zig-output-xls/zig-defined_name.xlsx
+Screenshot: testing/screenshots/comparison_defined_name.png
+
+RESULT: MATCH - User confirmed visual match

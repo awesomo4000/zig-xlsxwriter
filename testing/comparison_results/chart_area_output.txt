@@ -1,6 +1,6 @@
 Comparison of chart_area screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_area.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_area.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_area.png
+C Excel file: testing/c-output-xls/chart_area.xlsx
+Zig Excel file: testing/zig-output-xls/zig-chart_area.xlsx
+Screenshot: testing/screenshots/comparison_chart_area.png
 
 RESULT: MATCH - User confirmed visual match

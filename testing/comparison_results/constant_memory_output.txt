@@ -1,0 +1,6 @@
+Comparison of constant_memory screenshots:
+C Excel file: testing/c-output-xls/constant_memory.xlsx
+Zig Excel file: testing/zig-output-xls/zig-constant_memory.xlsx
+Screenshot: testing/screenshots/comparison_constant_memory.png
+
+RESULT: MATCH - User confirmed visual match

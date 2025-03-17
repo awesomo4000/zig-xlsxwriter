@@ -1,6 +1,6 @@
 Comparison of chart screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart.png
+C Excel file: testing/c-output-xls/chart.xlsx
+Zig Excel file: testing/zig-output-xls/zig-chart.xlsx
+Screenshot: testing/screenshots/comparison_chart.png
 
 RESULT: MATCH - User confirmed visual match

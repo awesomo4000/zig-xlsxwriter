@@ -1,6 +1,6 @@
 Comparison of tutorial1 screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/tutorial1.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-tutorial1.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_tutorial1.png
+C Excel file: testing/c-output-xls/tutorial1.xlsx
+Zig Excel file: testing/zig-output-xls/zig-tutorial1.xlsx
+Screenshot: testing/screenshots/comparison_tutorial1.png
 
 RESULT: MATCH - User confirmed visual match

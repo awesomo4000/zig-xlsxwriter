@@ -1,0 +1,6 @@
+Comparison of embed_image_buffer screenshots:
+C Excel file: testing/c-output-xls/embed_image_buffer.xlsx
+Zig Excel file: testing/zig-output-xls/zig-embed_image_buffer.xlsx
+Screenshot: testing/screenshots/comparison_embed_image_buffer.png
+
+RESULT: MATCH - User confirmed visual match

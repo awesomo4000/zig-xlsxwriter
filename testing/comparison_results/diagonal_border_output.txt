@@ -1,0 +1,6 @@
+Comparison of diagonal_border screenshots:
+C Excel file: testing/c-output-xls/diagonal_border.xlsx
+Zig Excel file: testing/zig-output-xls/zig-diagonal_border.xlsx
+Screenshot: testing/screenshots/comparison_diagonal_border.png
+
+RESULT: MATCH - User confirmed visual match

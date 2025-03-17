@@ -1,6 +1,6 @@
 Comparison of chart_pie screenshots:
-C Excel file: /Users/aarhodes/src/zig-xlsxwriter/testing/c-output-xls/chart_pie.xlsx
-Zig Excel file: /Users/aarhodes/src/zig-xlsxwriter/zig-chart_pie.xlsx
-Screenshot: /Users/aarhodes/src/zig-xlsxwriter/testing/screenshots/comparison_chart_pie.png
+C Excel file: testing/c-output-xls/chart_pie.xlsx
+Zig Excel file: testing/zig-output-xls/zig-chart_pie.xlsx
+Screenshot: testing/screenshots/comparison_chart_pie.png
 
 RESULT: MATCH - User confirmed visual match
